@@ -65,8 +65,6 @@ module ``about the stock example`` =
             let closing = Double.Parse(stockLine.[4])
             (stockLine.[0], abs <| opening - closing)
 
-        let sortVariance = fun (_, variance) -> variance
-
         let parseStock stockList = 
             List.map splitCommas stockList
             |> List.tail
