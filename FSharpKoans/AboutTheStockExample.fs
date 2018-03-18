@@ -1,5 +1,6 @@
 ﻿namespace FSharpKoans
 open FSharpKoans.Core
+open System
 
 //---------------------------------------------------------------
 // Apply Your Knowledge!
@@ -54,12 +55,25 @@ module ``about the stock example`` =
           "2012-03-01,31.93,32.39,31.85,32.29,77344100,32.29";
           "2012-02-29,31.89,32.00,31.61,31.74,59323600,31.74"; ]
     
-    // Feel free to add extra [<Koan>] members here to write
-    // tests for yourself along the way. You can also try 
-    // using the F# Interactive window to check your progress.
-
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let splitCommas (x:string) =
+            x.Split([|','|])
+
+        let toStockVariance (stockLine:string[]) =
+            let opening = Double.Parse(stockLine.[1])
+            let closing = Double.Parse(stockLine.[4])
+            (stockLine.[0], abs <| opening - closing)
+
+        let sortVariance = fun (_, variance) -> variance
+
+        let parseStock stockList = 
+            List.map splitCommas stockList
+            |> List.tail
+            |> List.map toStockVariance
+            |> List.maxBy snd
+            |> fst
+            
+        let result = parseStock stockData
         
         AssertEquality "2012-03-13" result
